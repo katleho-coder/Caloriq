@@ -330,7 +330,9 @@ document.getElementById("weight-form").addEventListener("submit", async (e) => {
     });
 
     if (res.ok) {
-      document.getElementById("weight-status").textContent = "✅ Weight updated successfully!";
+      document.getElementById("weight-status").textContent =
+  res.ok ? "✅ Weight updated successfully!" : "❌ Failed to update weight.";
+
       document.getElementById("weight-input").value = "";
       loadDashboard(); // refresh dashboard stats
     } else {
@@ -598,3 +600,57 @@ const token = localStorage.getItem("token");
 const res = await fetch("http://127.0.0.1:8001/users/1/daily-summary", {
   headers: { "Authorization": `Bearer ${token}` }
 });
+
+document.getElementById("register-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const username = document.getElementById("reg-username").value;
+  const password = document.getElementById("reg-password").value;
+
+  try {
+    const res = await fetch("http://127.0.0.1:8001/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
+    });
+
+    const data = await res.json();
+    document.getElementById("register-status").textContent =
+      res.ok ? `✅ ${data.message}` : "❌ Registration failed.";
+  } catch (err) {
+    console.error("Registration error:", err);
+    document.getElementById("register-status").textContent =
+      "⚠️ Error connecting to server.";
+  }
+});
+
+document.getElementById("register-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const username = document.getElementById("reg-username").value;
+  const password = document.getElementById("reg-password").value;
+
+  try {
+    const res = await fetch("http://127.0.0.1:8001/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
+    });
+
+    const data = await res.json();
+    document.getElementById("register-status").textContent =
+      res.ok ? `✅ ${data.message}` : "❌ Registration failed.";
+  } catch (err) {
+    console.error("Registration error:", err);
+    document.getElementById("register-status").textContent =
+      "⚠️ Error connecting to server.";
+  }
+});
+
+if (res.ok) {
+  localStorage.setItem("token", data.access_token);
+  document.getElementById("login-status").textContent =
+    `✅ Welcome ${username}!`;
+  // Load user-specific dashboard
+  loadDailySummary();
+  loadWeightHistory();
+  loadWeeklyTrends();
+}
