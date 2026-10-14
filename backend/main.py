@@ -10,19 +10,26 @@ from reportlab.pdfgen import canvas
 
 app = FastAPI()
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # --- Database connection ---
-def get_connection():
-    return psycopg2.connect(
-        host="localhost",
-        database="your_db_name",
-        user="your_db_user",
-        password="your_db_password"
-    )
+
 
 # --- Auth setup ---
-SECRET_KEY = "supersecretkey"
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+def get_connection():
+    """Establish and return a PostgreSQL database connection."""
+    return psycopg2.connect(
+        host="localhost",
+        database=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD")
+    )
 
 # --- Register new user ---
 @app.post("/register")
