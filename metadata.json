@@ -1,0 +1,8 @@
+{
+  "name": "Caloriq",
+  "description": "Your daily nutrition dashboard for tracking calories, protein, and weight progress.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
